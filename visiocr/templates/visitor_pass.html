@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Pass</title>
+    <style>
+        /* Main styling */
+        body {
+            background: linear-gradient(to right, #ece9e6, #ffffff);
+            color: #333;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Visitor Pass styling */
+        .welcome-message {
+            font-size: 24px;
+            color: #4B0082;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .pass-container {
+            max-width: 400px;
+            padding: 20px;
+            border: 2px solid #8A2BE2;
+            border-radius: 10px;
+            background: linear-gradient(to bottom right, #4B0082, #8A2BE2);
+            color: #fff;
+            text-align: center;
+            box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .header {
+            color: #BA55D3;
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .field {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #DA70D6;
+        }
+
+        .qr-code img {
+            max-width: 150px;
+            max-height: 150px;
+            width: auto;
+            height: auto;
+        }
+
+        .download-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #BA55D3;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .download-button:hover {
+            background-color: #8A2BE2;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Welcome message -->
+<div class="welcome-message">Welcome! This is your Visitor Pass</div>
+
+<!-- Visitor Pass Container -->
+<div id="visitor-pass-container" class="pass-container">
+    <div class="header">Visitor Pass</div>
+    <div class="field"><span class="label">Document Type:</span> {{ data.Document_Type }}</div>
+    <div class="field"><span class="label">ID Number:</span> {{ data.ID_Number }}</div>
+    <div class="field"><span class="label">Name:</span> {{ data.Name }}</div>
+    <div class="field"><span class="label">Date of Birth:</span> {{ data.Date_of_Birth }}</div>
+    <div class="field"><span class="label">Email:</span> {{ data.Email }}</div>
+    <div class="field"><span class="label">Mobile Number:</span> {{ data.Mobile_Number }}</div>
+    <div class="field"><span class="label">Validity Time:</span> {{ data.Validity_Time }}</div>
+
+    <!-- QR code display -->
+    <div class="qr-code">
+        <img src="data:image/png;base64,{{ qr_code_base64 }}" alt="QR Code">
+    </div>
+    
+    <!-- Download button -->
+    <button class="download-button" onclick="downloadPDF()">Download as PDF</button>
+</div>
+
+<!-- Include html2pdf.js library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
+<script>
+    // Function to download the visitor pass as a styled PDF
+    function downloadPDF() {
+        const element = document.getElementById('visitor-pass-container');  // Get the visitor pass container
+        const options = {
+            margin:       1,
+            filename:     'visitor_pass.pdf',
+            image:        { type: 'png', quality: 0.98 },
+            html2canvas:  { scale: 2 },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        html2pdf().from(element).set(options).save();  // Generate and download the PDF
+    }
+</script>
+
+</body>
+</html>
+
+
